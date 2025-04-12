@@ -136,6 +136,20 @@ const Cars: React.FC = () => {
     }
   };
 
+  const handleConfirmBooking = () => {
+    if (!startDate || !endDate || !selectedCar) {
+      alert('Please select rental dates before confirming');
+      return;
+    }
+    
+    // Handle booking confirmation
+    alert(`Booking confirmed for ${selectedCar.name}!\n\nDates: ${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}\nTotal Price: $${totalPrice}`);
+    setShowBookingModal(false);
+    setStartDate(null);
+    setEndDate(null);
+    setTotalPrice(0);
+  };
+
   return (
     <div className="py-12">
       <div className="container mx-auto px-4">
@@ -216,14 +230,15 @@ const Cars: React.FC = () => {
               </div>
 
               <button
-                className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300"
-                onClick={() => {
-                  // Handle booking confirmation
-                  alert('Booking confirmed!');
-                  setShowBookingModal(false);
-                }}
+                className={`w-full py-3 rounded-lg transition duration-300 ${
+                  startDate && endDate 
+                    ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer' 
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                }`}
+                onClick={handleConfirmBooking}
+                disabled={!startDate || !endDate}
               >
-                Confirm Booking
+                {startDate && endDate ? 'Confirm Booking' : 'Select dates to continue'}
               </button>
             </div>
           </div>

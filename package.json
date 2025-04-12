@@ -2,7 +2,7 @@
   "name": "rentorbits",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://diksha78-bot.github.io/rentorbits",
+  "homepage": "https://diksha78-bot.github.io/RentOrbits",
   "dependencies": {
     "@heroicons/react": "^2.1.1",
     "@types/node": "^16.18.0",

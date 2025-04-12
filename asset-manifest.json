@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/rentorbits/static/css/main.16403b7b.css",
+    "main.js": "/rentorbits/static/js/main.81226fec.js",
+    "index.html": "/rentorbits/index.html",
+    "main.16403b7b.css.map": "/rentorbits/static/css/main.16403b7b.css.map",
+    "main.81226fec.js.map": "/rentorbits/static/js/main.81226fec.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.16403b7b.css",
+    "static/js/main.81226fec.js"
+  ]
+}

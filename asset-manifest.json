@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/rentorbits/static/css/main.16403b7b.css",
-    "main.js": "/rentorbits/static/js/main.81226fec.js",
-    "index.html": "/rentorbits/index.html",
-    "main.16403b7b.css.map": "/rentorbits/static/css/main.16403b7b.css.map",
-    "main.81226fec.js.map": "/rentorbits/static/js/main.81226fec.js.map"
+    "main.css": "/RentOrbits/static/css/main.16403b7b.css",
+    "main.js": "/RentOrbits/static/js/main.81226fec.js",
+    "index.html": "/RentOrbits/index.html",
+    "main.16403b7b.css.map": "/RentOrbits/static/css/main.16403b7b.css.map",
+    "main.81226fec.js.map": "/RentOrbits/static/js/main.81226fec.js.map"
   },
   "entrypoints": [
     "static/css/main.16403b7b.css",

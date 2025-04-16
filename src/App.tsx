@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Cars from './pages/Cars';
 import About from './pages/About';
-import Contact from './pages/Contact';
+import Contact from './components/Contact';
 
 function App() {
   return (

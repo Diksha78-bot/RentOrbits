@@ -2,20 +2,23 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCar } from '@fortawesome/free-solid-svg-icons';
+import { faCar, faUser } from '@fortawesome/free-solid-svg-icons';
 
 interface NavbarProps {
-  isLoggedIn: boolean;
   onLoginClick: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLoginClick }) => {
+const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   return (
@@ -57,7 +60,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLoginClick }) => {
             </div>
           </div>
           <div className="flex items-center">
-            {!isLoggedIn ? (
+            {!user ? (
               <button
                 onClick={onLoginClick}
                 className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors duration-300"
@@ -66,7 +69,13 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLoginClick }) => {
               </button>
             ) : (
               <div className="flex items-center space-x-4">
-                <span className="text-gray-300">Welcome, {user?.name || 'User'}</span>
+                <Link
+                  to="/profile"
+                  className="text-gray-300 hover:text-white flex items-center"
+                >
+                  <FontAwesomeIcon icon={faUser} className="h-5 w-5 mr-2" />
+                  {user.email}
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-600 transition-colors duration-300"

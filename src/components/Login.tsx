@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '../context/AuthContext';
 
 interface LoginProps {
   onLoginSuccess: () => void;
@@ -8,6 +9,7 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({ onLoginSuccess, onClose }) => {
+  const { login, register } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     email: '',
@@ -25,30 +27,31 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onClose }) => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    if (isLogin) {
-      // Handle login
-      if (!formData.email || !formData.password) {
-        setError('Please fill in all fields');
-        return;
+    try {
+      if (isLogin) {
+        if (!formData.email || !formData.password) {
+          setError('Please fill in all fields');
+          return;
+        }
+        await login(formData.email, formData.password);
+      } else {
+        if (!formData.email || !formData.password || !formData.name || !formData.confirmPassword) {
+          setError('Please fill in all fields');
+          return;
+        }
+        if (formData.password !== formData.confirmPassword) {
+          setError('Passwords do not match');
+          return;
+        }
+        await register(formData.name, formData.email, formData.password);
       }
-      // Simulate successful login
       onLoginSuccess();
-    } else {
-      // Handle signup
-      if (!formData.email || !formData.password || !formData.name || !formData.confirmPassword) {
-        setError('Please fill in all fields');
-        return;
-      }
-      if (formData.password !== formData.confirmPassword) {
-        setError('Passwords do not match');
-        return;
-      }
-      // Simulate successful signup
-      onLoginSuccess();
+    } catch (err: any) {
+      setError(err.message || 'Authentication failed');
     }
   };
 

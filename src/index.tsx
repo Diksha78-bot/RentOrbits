@@ -4,6 +4,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import App from './App';
 import './index.css';
+import { AuthProvider } from './context/AuthContext';
 
 // Add all Font Awesome brand icons to the library
 library.add(fab);
@@ -14,6 +15,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </React.StrictMode>
 ); 

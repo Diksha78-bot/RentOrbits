@@ -1,0 +1,11 @@
+{
+  "files": {
+    "main.css": "/RentOrbits/static/css/main.14d85a32.css",
+    "main.js": "/RentOrbits/static/js/main.f747bf7a.js",
+    "index.html": "/RentOrbits/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.14d85a32.css",
+    "static/js/main.f747bf7a.js"
+  ]
+}

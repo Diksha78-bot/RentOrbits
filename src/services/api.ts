@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = process.env.REACT_APP_API_URL || 'https://rentorbits-api.onrender.com/api';
 
 // Car services
 export const getCars = async () => {
@@ -47,4 +47,4 @@ export const getUserBookings = async (token: string) => {
     headers: { Authorization: `Bearer ${token}` }
   });
   return response.data;
-}; 
+};

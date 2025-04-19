@@ -7,13 +7,13 @@ import Cars from './pages/Cars';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Login from './components/Login';
+import ProtectedRoute from './components/ProtectedRoute';
+import Profile from './pages/Profile';
 
 const App: React.FC = () => {
   const [showLogin, setShowLogin] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLoginSuccess = () => {
-    setIsLoggedIn(true);
     setShowLogin(false);
   };
 
@@ -25,13 +25,22 @@ const App: React.FC = () => {
         </div>
       }>
         <div className="flex flex-col min-h-screen bg-gray-900">
-          <Navbar isLoggedIn={isLoggedIn} onLoginClick={() => setShowLogin(true)} />
+          <Navbar onLoginClick={() => setShowLogin(true)} />
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/cars" element={<Cars />} />
+              <Route path="/cars" element={
+                <ProtectedRoute>
+                  <Cars />
+                </ProtectedRoute>
+              } />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/profile" element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              } />
             </Routes>
           </main>
           <Footer />

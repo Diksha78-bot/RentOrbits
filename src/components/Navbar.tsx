@@ -68,7 +68,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLoginClick }) => {
               </button>
             ) : (
               <div className="flex items-center space-x-4">
-                <span className="text-gray-300">Welcome, {user.name}</span>
+                <span className="text-gray-300">Welcome, {user?.name || 'User'}</span>
                 <button
                   onClick={handleLogout}
                   className="bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-600 transition-colors duration-300"

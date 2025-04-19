@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faGasPump, 
@@ -9,13 +8,7 @@ import {
   faSnowflake,
   faStar,
   faStarHalfAlt,
-  faMapMarkerAlt,
-  faCalendarAlt,
-  faClock,
-  faUser,
-  faCarSide,
-  faCogs,
-  faSun
+  faMapMarkerAlt
 } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";

@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/RentOrbits/static/css/main.8260d810.css",
-    "main.js": "/RentOrbits/static/js/main.7e2eb1d7.js",
+    "main.css": "/RentOrbits/static/css/main.47834a9e.css",
+    "main.js": "/RentOrbits/static/js/main.1da70457.js",
     "index.html": "/RentOrbits/index.html",
-    "main.8260d810.css.map": "/RentOrbits/static/css/main.8260d810.css.map",
-    "main.7e2eb1d7.js.map": "/RentOrbits/static/js/main.7e2eb1d7.js.map"
+    "main.47834a9e.css.map": "/RentOrbits/static/css/main.47834a9e.css.map",
+    "main.1da70457.js.map": "/RentOrbits/static/js/main.1da70457.js.map"
   },
   "entrypoints": [
-    "static/css/main.8260d810.css",
-    "static/js/main.7e2eb1d7.js"
+    "static/css/main.47834a9e.css",
+    "static/js/main.1da70457.js"
   ]
 }

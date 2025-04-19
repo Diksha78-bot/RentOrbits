@@ -1,86 +1,148 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCar, faClock, faShieldAlt, faTag } from '@fortawesome/free-solid-svg-icons';
 
-const Home: React.FC = () => {
+const Home = () => {
   return (
-    <div>
-      {/* Enhanced Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-900 to-blue-600 text-white py-32 overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-20"></div>
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-900/80 to-blue-600/80"></div>
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <div className="relative bg-gradient-to-r from-blue-600 to-blue-800">
+        <div className="absolute inset-0">
+          <img
+            className="w-full h-full object-cover mix-blend-overlay"
+            src="https://images.unsplash.com/photo-1485291571150-772bcfc10da5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2128&q=80"
+            alt="Hero background"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-800 mix-blend-multiply" />
         </div>
+        <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            Premium Car Rentals in Maharashtra
+          </h1>
+          <p className="mt-6 max-w-3xl text-xl text-blue-100">
+            Experience luxury and comfort with our wide range of vehicles. Book your perfect ride today and enjoy hassle-free travel across Maharashtra.
+          </p>
+          <div className="mt-10">
+            <Link
+              to="/cars"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50 transition-colors duration-300"
+            >
+              Browse Cars
+            </Link>
+          </div>
+        </div>
+      </div>
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              Drive Your Dreams with <span className="text-yellow-400">RentOrbits</span>
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 text-gray-100">
-              Experience the freedom of the open road with our premium fleet of vehicles
+      {/* Features Section */}
+      <div className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+              Why Choose RentOrbits
+            </h2>
+            <p className="mt-4 text-xl text-gray-600">
+              We offer the best car rental experience with our premium services
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+          </div>
+
+          <div className="mt-20">
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="pt-6">
+                <div className="flow-root bg-white rounded-lg px-6 pb-8">
+                  <div className="-mt-6">
+                    <div>
+                      <span className="inline-flex items-center justify-center p-3 bg-blue-600 rounded-md shadow-lg">
+                        <FontAwesomeIcon icon={faCar} className="h-6 w-6 text-white" />
+                      </span>
+                    </div>
+                    <h3 className="mt-8 text-lg font-medium text-gray-900 tracking-tight">Wide Selection</h3>
+                    <p className="mt-5 text-base text-gray-500">
+                      Choose from our diverse fleet of well-maintained vehicles
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-6">
+                <div className="flow-root bg-white rounded-lg px-6 pb-8">
+                  <div className="-mt-6">
+                    <div>
+                      <span className="inline-flex items-center justify-center p-3 bg-blue-600 rounded-md shadow-lg">
+                        <FontAwesomeIcon icon={faClock} className="h-6 w-6 text-white" />
+                      </span>
+                    </div>
+                    <h3 className="mt-8 text-lg font-medium text-gray-900 tracking-tight">24/7 Support</h3>
+                    <p className="mt-5 text-base text-gray-500">
+                      Round-the-clock customer service for your convenience
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-6">
+                <div className="flow-root bg-white rounded-lg px-6 pb-8">
+                  <div className="-mt-6">
+                    <div>
+                      <span className="inline-flex items-center justify-center p-3 bg-blue-600 rounded-md shadow-lg">
+                        <FontAwesomeIcon icon={faShieldAlt} className="h-6 w-6 text-white" />
+                      </span>
+                    </div>
+                    <h3 className="mt-8 text-lg font-medium text-gray-900 tracking-tight">Safe & Reliable</h3>
+                    <p className="mt-5 text-base text-gray-500">
+                      All vehicles undergo regular maintenance checks
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-6">
+                <div className="flow-root bg-white rounded-lg px-6 pb-8">
+                  <div className="-mt-6">
+                    <div>
+                      <span className="inline-flex items-center justify-center p-3 bg-blue-600 rounded-md shadow-lg">
+                        <FontAwesomeIcon icon={faTag} className="h-6 w-6 text-white" />
+                      </span>
+                    </div>
+                    <h3 className="mt-8 text-lg font-medium text-gray-900 tracking-tight">Best Rates</h3>
+                    <p className="mt-5 text-base text-gray-500">
+                      Competitive pricing with no hidden charges
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="bg-blue-700">
+        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
+          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+            <span className="block">Ready to get started?</span>
+            <span className="block text-blue-200">Book your car today.</span>
+          </h2>
+          <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
+            <div className="inline-flex rounded-md shadow">
               <Link
                 to="/cars"
-                className="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg font-bold hover:bg-yellow-300 transition duration-300 flex items-center justify-center group"
+                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 transition-colors duration-300"
               >
-                Explore Our Fleet
-                <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                View Available Cars
               </Link>
+            </div>
+            <div className="ml-3 inline-flex rounded-md shadow">
               <Link
                 to="/contact"
-                className="bg-white/10 text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/20 transition duration-300"
+                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-300"
               >
                 Contact Us
               </Link>
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            Why Choose <span className="text-blue-600">RentOrbits</span>?
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
-              <div className="text-5xl mb-6">🚗</div>
-              <h3 className="text-xl font-semibold mb-4">Premium Fleet</h3>
-              <p className="text-gray-600">Choose from our extensive collection of luxury and economy vehicles</p>
-            </div>
-            <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
-              <div className="text-5xl mb-6">💰</div>
-              <h3 className="text-xl font-semibold mb-4">Best Rates</h3>
-              <p className="text-gray-600">Competitive pricing with flexible rental options</p>
-            </div>
-            <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
-              <div className="text-5xl mb-6">⭐</div>
-              <h3 className="text-xl font-semibold mb-4">24/7 Support</h3>
-              <p className="text-gray-600">Round-the-clock assistance for all your needs</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Special Offers Section */}
-      <section className="py-20 bg-blue-600 text-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">Special Weekend Offers</h2>
-            <p className="text-xl mb-8">Get 20% off on all weekend rentals. Book now and save!</p>
-            <Link
-              to="/cars"
-              className="bg-yellow-400 text-blue-900 px-8 py-3 rounded-lg font-bold hover:bg-yellow-300 transition duration-300 inline-block"
-            >
-              View Offers
-            </Link>
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
   );
 };

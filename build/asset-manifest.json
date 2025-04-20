@@ -1,11 +1,16 @@
 {
   "files": {
-    "main.css": "/RentOrbits/static/css/main.14d85a32.css",
-    "main.js": "/RentOrbits/static/js/main.f747bf7a.js",
+    "main.css": "/RentOrbits/static/css/main.d59788a2.css",
+    "main.js": "/RentOrbits/static/js/main.5f3df3f5.js",
+    "static/js/455.b543c479.chunk.js": "/RentOrbits/static/js/455.b543c479.chunk.js",
+    "static/js/831.f8de2b0c.chunk.js": "/RentOrbits/static/js/831.f8de2b0c.chunk.js",
+    "static/js/583.7f5d24b2.chunk.js": "/RentOrbits/static/js/583.7f5d24b2.chunk.js",
+    "static/js/488.e9928e17.chunk.js": "/RentOrbits/static/js/488.e9928e17.chunk.js",
+    "static/js/867.2046413f.chunk.js": "/RentOrbits/static/js/867.2046413f.chunk.js",
     "index.html": "/RentOrbits/index.html"
   },
   "entrypoints": [
-    "static/css/main.14d85a32.css",
-    "static/js/main.f747bf7a.js"
+    "static/css/main.d59788a2.css",
+    "static/js/main.5f3df3f5.js"
   ]
 }

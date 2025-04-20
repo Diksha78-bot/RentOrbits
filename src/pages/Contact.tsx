@@ -4,8 +4,17 @@ import {
   faMapMarkerAlt, 
   faPhone, 
   faEnvelope, 
-  faClock 
+  faClock,
+  faMessage,
+  faUser,
+  faPaperPlane
 } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faWhatsapp, 
+  faFacebook, 
+  faInstagram, 
+  faLinkedin 
+} from '@fortawesome/free-brands-svg-icons';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +24,9 @@ const Contact = () => {
     subject: '',
     message: ''
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -26,211 +38,257 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you'll integrate with your backend
-    console.log('Form submitted:', formData);
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: ''
-    });
-    alert('Thank you for your message. We will get back to you soon!');
+    setIsSubmitting(true);
+    
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setSubmitStatus('success');
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+    } catch (error) {
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+      // Reset status after 3 seconds
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+    }
   };
 
+  const contactInfo = [
+    {
+      icon: faMapMarkerAlt,
+      title: 'Visit Us',
+      content: '123 Car Avenue, Mumbai, Maharashtra 400001',
+      color: 'bg-blue-500'
+    },
+    {
+      icon: faPhone,
+      title: 'Call Us',
+      content: '+91 98765 43210',
+      color: 'bg-green-500'
+    },
+    {
+      icon: faEnvelope,
+      title: 'Email Us',
+      content: 'info@rentorbits.com',
+      color: 'bg-purple-500'
+    },
+    {
+      icon: faClock,
+      title: 'Working Hours',
+      content: 'Mon - Sat: 9:00 AM - 8:00 PM',
+      color: 'bg-orange-500'
+    }
+  ];
+
+  const socialLinks = [
+    { icon: faWhatsapp, link: 'https://wa.me/919876543210', color: 'bg-green-500' },
+    { icon: faFacebook, link: '#', color: 'bg-blue-600' },
+    { icon: faInstagram, link: '#', color: 'bg-pink-600' },
+    { icon: faLinkedin, link: '#', color: 'bg-blue-700' }
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       {/* Hero Section */}
-      <div className="bg-blue-600 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-extrabold text-white sm:text-5xl text-center">
-            Contact Us
-          </h1>
-          <p className="mt-4 text-xl text-blue-100 text-center max-w-3xl mx-auto">
-            Have questions? We're here to help. Send us a message and we'll respond as soon as possible.
-          </p>
+      <div className="relative py-20 bg-primary-600">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center text-white">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Get in Touch</h1>
+            <p className="text-xl text-white/80">
+              Have questions? We're here to help. Contact our team for support or inquiries.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-          {/* Contact Information */}
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">Get in Touch</h2>
-            
-            <div className="space-y-8">
-              <div className="flex items-start">
-                <div className="flex-shrink-0">
-                  <span className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-100 text-blue-600">
-                    <FontAwesomeIcon icon={faMapMarkerAlt} className="h-6 w-6" />
-                  </span>
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-lg font-medium text-gray-900">Our Location</h3>
-                  <p className="mt-2 text-gray-600">
-                    Prisha Motors<br />
-                    Islampur - PethNaka Road<br />
-                    Tal: Walwa, Dist: Sangli<br />
-                    Pin Code: 415409
-                  </p>
-                </div>
+      {/* Contact Info Cards */}
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 -mt-16">
+          {contactInfo.map((info, index) => (
+            <div
+              key={index}
+              className="bg-white dark:bg-neutral-800 rounded-xl shadow-lg p-6 transform hover:-translate-y-1 transition-transform duration-300"
+            >
+              <div className={`${info.color} w-12 h-12 rounded-full flex items-center justify-center mb-4`}>
+                <FontAwesomeIcon icon={info.icon} className="text-white text-xl" />
+              </div>
+              <h3 className="text-xl font-bold mb-2 text-neutral-900 dark:text-white">{info.title}</h3>
+              <p className="text-neutral-600 dark:text-neutral-400">{info.content}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Contact Form Section */}
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white dark:bg-neutral-800 rounded-xl shadow-lg p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Form */}
+              <div>
+                <h2 className="text-2xl font-bold mb-6 text-neutral-900 dark:text-white">Send us a Message</h2>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-1">
+                      Your Name
+                    </label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-neutral-500">
+                        <FontAwesomeIcon icon={faUser} />
+                      </span>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        className="w-full pl-10 pr-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500"
+                        placeholder="John Doe"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-1">
+                      Email Address
+                    </label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-neutral-500">
+                        <FontAwesomeIcon icon={faEnvelope} />
+                      </span>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className="w-full pl-10 pr-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500"
+                        placeholder="john@example.com"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-1">
+                      Phone Number
+                    </label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-neutral-500">
+                        <FontAwesomeIcon icon={faPhone} />
+                      </span>
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        className="w-full pl-10 pr-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500"
+                        placeholder="+91 98765 43210"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-1">
+                      Subject
+                    </label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-neutral-500">
+                        <FontAwesomeIcon icon={faMessage} />
+                      </span>
+                      <input
+                        type="text"
+                        name="subject"
+                        value={formData.subject}
+                        onChange={handleChange}
+                        required
+                        className="w-full pl-10 pr-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500"
+                        placeholder="How can we help?"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-1">
+                      Message
+                    </label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
+                      rows={4}
+                      className="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500"
+                      placeholder="Your message here..."
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`w-full flex items-center justify-center space-x-2 px-6 py-3 rounded-lg text-white font-semibold transition-colors duration-300 ${
+                      isSubmitting ? 'bg-primary-400' : 'bg-primary-600 hover:bg-primary-700'
+                    }`}
+                  >
+                    <FontAwesomeIcon icon={faPaperPlane} />
+                    <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
+                  </button>
+
+                  {submitStatus === 'success' && (
+                    <div className="mt-4 p-4 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-100 rounded-lg">
+                      Message sent successfully! We'll get back to you soon.
+                    </div>
+                  )}
+
+                  {submitStatus === 'error' && (
+                    <div className="mt-4 p-4 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-100 rounded-lg">
+                      Failed to send message. Please try again later.
+                    </div>
+                  )}
+                </form>
               </div>
 
-              <div className="flex items-start">
-                <div className="flex-shrink-0">
-                  <span className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-100 text-blue-600">
-                    <FontAwesomeIcon icon={faPhone} className="h-6 w-6" />
-                  </span>
+              {/* Map and Social Links */}
+              <div>
+                <h2 className="text-2xl font-bold mb-6 text-neutral-900 dark:text-white">Find Us</h2>
+                {/* Map Placeholder */}
+                <div className="aspect-video bg-neutral-200 dark:bg-neutral-700 rounded-lg mb-6">
+                  <iframe
+                    title="RentOrbits Location"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241317.11609823277!2d72.74109995644531!3d19.08219783958001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c6306644edc1%3A0x5da4ed8f8d648c69!2sMumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1652789563301!5m2!1sen!2sin"
+                    className="w-full h-full rounded-lg"
+                    loading="lazy"
+                  />
                 </div>
-                <div className="ml-4">
-                  <h3 className="text-lg font-medium text-gray-900">Contact Numbers</h3>
-                  <p className="mt-2 text-gray-600">
-                    <a href="tel:+919860001167" className="hover:text-blue-600">
-                      +91 98600 01167
-                    </a>
-                  </p>
-                </div>
-              </div>
 
-              <div className="flex items-start">
-                <div className="flex-shrink-0">
-                  <span className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-100 text-blue-600">
-                    <FontAwesomeIcon icon={faEnvelope} className="h-6 w-6" />
-                  </span>
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-lg font-medium text-gray-900">Email</h3>
-                  <p className="mt-2 text-gray-600">
-                    <a href="mailto:prishamotors1167@gmail.com" className="hover:text-blue-600">
-                      prishamotors1167@gmail.com
-                    </a>
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start">
-                <div className="flex-shrink-0">
-                  <span className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-100 text-blue-600">
-                    <FontAwesomeIcon icon={faClock} className="h-6 w-6" />
-                  </span>
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-lg font-medium text-gray-900">Business Hours</h3>
-                  <p className="mt-2 text-gray-600">
-                    Monday - Saturday: 9:00 AM - 8:00 PM<br />
-                    Sunday: 10:00 AM - 6:00 PM
-                  </p>
+                {/* Social Links */}
+                <div>
+                  <h3 className="text-xl font-bold mb-4 text-neutral-900 dark:text-white">Connect With Us</h3>
+                  <div className="flex space-x-4">
+                    {socialLinks.map((social, index) => (
+                      <a
+                        key={index}
+                        href={social.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`${social.color} w-10 h-10 rounded-full flex items-center justify-center text-white hover:opacity-80 transition-opacity duration-300`}
+                      >
+                        <FontAwesomeIcon icon={social.icon} />
+                      </a>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Contact Form */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">Send us a Message</h2>
-            
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-700">
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={4}
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-
-              <div>
-                <button
-                  type="submit"
-                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-300"
-                >
-                  Send Message
-                </button>
-              </div>
-            </form>
-          </div>
         </div>
-      </div>
-
-      {/* Map Section */}
-      <div className="mt-16">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3803.888505942824!2d74.26659731487567!3d17.567499987982843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc235aaaaaaaaa%3A0xaaaaaaaaaaaaaa!2sIslampur%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
-          width="100%"
-          height="450"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="Prisha Motors Location"
-        />
       </div>
     </div>
   );

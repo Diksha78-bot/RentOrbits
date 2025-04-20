@@ -1,58 +1,43 @@
-import React, { useState, Suspense } from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import Home from './pages/Home';
-import Cars from './pages/Cars';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
-import Profile from './pages/Profile';
+import { AuthProvider } from './context/AuthContext';
+import Chatbot from './components/Chatbot';
+import Properties from './pages/Properties';
 
-const App: React.FC = () => {
-  const [showLogin, setShowLogin] = useState(false);
+const Home = React.lazy(() => import('./pages/Home'));
+const About = React.lazy(() => import('./pages/About'));
+const Cars = React.lazy(() => import('./pages/Cars'));
+const Contact = React.lazy(() => import('./pages/Contact'));
+const Profile = React.lazy(() => import('./pages/Profile'));
 
-  const handleLoginSuccess = () => {
-    setShowLogin(false);
-  };
-
+const App = () => {
   return (
-    <Router>
-      <Suspense fallback={
-        <div className="flex items-center justify-center min-h-screen bg-gray-900">
-          <div className="text-white text-2xl">Loading...</div>
-        </div>
-      }>
-        <div className="flex flex-col min-h-screen bg-gray-900">
-          <Navbar onLoginClick={() => setShowLogin(true)} />
-          <main className="flex-grow">
+    <AuthProvider>
+      <Router>
+        <div className="min-h-screen bg-sage-50 text-forest-900">
+          <Navbar />
+          <Suspense fallback={
+            <div className="flex items-center justify-center min-h-screen">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-forest-600"></div>
+            </div>
+          }>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/cars" element={
-                <ProtectedRoute>
-                  <Cars />
-                </ProtectedRoute>
-              } />
               <Route path="/about" element={<About />} />
+              <Route path="/cars" element={<ProtectedRoute><Cars /></ProtectedRoute>} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/profile" element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              } />
+              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="/properties" element={<Properties />} />
             </Routes>
-          </main>
+          </Suspense>
           <Footer />
-          {showLogin && (
-            <Login
-              onLoginSuccess={handleLoginSuccess}
-              onClose={() => setShowLogin(false)}
-            />
-          )}
+          <Chatbot />
         </div>
-      </Suspense>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
 };
 

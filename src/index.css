@@ -2,6 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+  
+  a {
+    @apply text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors duration-300;
+  }
+  
+  button {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+  
+  .btn-primary {
+    @apply bg-primary-600 text-white hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 px-4 py-2 rounded-lg transition-colors duration-300;
+  }
+  
+  .btn-secondary {
+    @apply bg-neutral-200 text-neutral-900 hover:bg-neutral-300 dark:bg-neutral-700 dark:text-neutral-50 dark:hover:bg-neutral-600 px-4 py-2 rounded-lg transition-colors duration-300;
+  }
+  
+  .card {
+    @apply bg-white dark:bg-neutral-800 rounded-lg shadow-card p-6;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-forest-600 text-white px-4 py-2 rounded-md hover:bg-forest-700;
+  }
+  
+  .btn-secondary {
+    @apply bg-sage-200 text-forest-900 px-4 py-2 rounded-md hover:bg-sage-300;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+}
+
 :root {
   --primary: #2563eb;
   --primary-dark: #1d4ed8;
@@ -45,20 +89,6 @@ body {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-/* Button Styles */
-.btn-primary {
-  @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300;
-}
-
-.btn-secondary {
-  @apply bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300;
-}
-
-/* Card Styles */
-.card {
-  @apply bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden;
 }
 
 /* Input Styles */

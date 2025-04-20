@@ -2,7 +2,7 @@
   "name": "rentorbits",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://diksha78-bot.github.io/RentOrbits",
+  "homepage": "https://diksha78-bot.github.io/rentorbits",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",

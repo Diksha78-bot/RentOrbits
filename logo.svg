@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="#10B981" opacity="0.1"/>
+  
+  <!-- Outer orbit -->
+  <circle cx="256" cy="256" r="200" stroke="#10B981" stroke-width="12" fill="none"/>
+  
+  <!-- Inner orbit -->
+  <circle cx="256" cy="256" r="140" stroke="#10B981" stroke-width="8" fill="none"/>
+  
+  <!-- Building icon -->
+  <path d="M256 120L352 216V376H160V216L256 120Z" fill="#10B981"/>
+  
+  <!-- Windows -->
+  <rect x="200" y="256" width="40" height="40" fill="white"/>
+  <rect x="272" y="256" width="40" height="40" fill="white"/>
+  <rect x="200" y="316" width="40" height="40" fill="white"/>
+  <rect x="272" y="316" width="40" height="40" fill="white"/>
+  
+  <!-- Door -->
+  <rect x="236" y="316" width="40" height="60" fill="white"/>
+</svg> 

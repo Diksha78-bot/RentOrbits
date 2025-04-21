@@ -3,8 +3,23 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --primary: #22c55e;
+    --primary-dark: #16a34a;
+  }
+
   body {
     @apply bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50;
+    margin: 0;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -34,39 +49,20 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-forest-600 text-white px-4 py-2 rounded-md hover:bg-forest-700;
+    @apply bg-primary-600 text-white hover:bg-primary-700 px-4 py-2 rounded-lg transition-colors duration-300;
   }
   
   .btn-secondary {
-    @apply bg-sage-200 text-forest-900 px-4 py-2 rounded-md hover:bg-sage-300;
+    @apply bg-neutral-200 text-neutral-900 hover:bg-neutral-300 dark:bg-neutral-700 dark:text-neutral-50 dark:hover:bg-neutral-600 px-4 py-2 rounded-lg transition-colors duration-300;
   }
   
   .card {
     @apply bg-white rounded-lg shadow-md p-6;
   }
-}
 
-:root {
-  --primary: #2563eb;
-  --primary-dark: #1d4ed8;
-  --secondary: #f59e0b;
-  --accent: #10b981;
-  --background: #f8fafc;
-  --text: #1e293b;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--background);
-  color: var(--text);
+  .nav-link {
+    @apply text-neutral-600 dark:text-neutral-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-300;
+  }
 }
 
 /* Custom scrollbar */
@@ -106,11 +102,6 @@ body {
 
 .section-title {
   @apply text-3xl md:text-4xl font-bold text-center mb-8 gradient-text;
-}
-
-/* Navbar Styles */
-.nav-link {
-  @apply text-gray-600 hover:text-blue-600 transition-colors duration-300;
 }
 
 /* Footer Styles */
@@ -249,7 +240,7 @@ input, select, textarea {
 
 /* Add proper transition styles */
 * {
-  transition: background-color 0.2s, border-color 0.2s, color 0.2s, fill 0.2s, stroke 0.2s, opacity 0.2s, box-shadow 0.2s, transform 0.2s;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 /* Add proper dark mode support */

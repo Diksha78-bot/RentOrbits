@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -16,7 +17,7 @@ module.exports = {
           600: '#16a34a',
           700: '#15803d',
           800: '#166534',
-          900: '#14532d',
+          900: '#14532d'
         },
         neutral: {
           50: '#fafafa',
@@ -84,8 +85,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/aspect-ratio'),
-  ],
+  plugins: [],
 } 

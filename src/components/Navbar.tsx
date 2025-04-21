@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -19,15 +19,40 @@ import Login from './Login';
 const Navbar = () => {
   const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Check localStorage and system preference for initial theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      return savedTheme === 'dark';
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
   const [showLogin, setShowLogin] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
   const [favorites, setFavorites] = useState<number[]>([]);
   const navigate = useNavigate();
 
+  // Initialize theme on component mount
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
+
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark');
+    const newTheme = !isDarkMode;
+    setIsDarkMode(newTheme);
+    if (newTheme) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
   };
 
   const handleLoginSuccess = () => {
@@ -56,17 +81,9 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <Link to="/" className="flex items-center space-x-3">
-                <div className="w-12 h-12 relative">
-                  <img 
-                    src="/logo.png" 
-                    alt="RentOrbits" 
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <span className="text-2xl font-bold text-primary-600 dark:text-primary-400 tracking-tight">
-                  RentOrbits
-                </span>
+              <Link to="/" className="flex items-center">
+                <span className="text-2xl mr-2">🚗</span>
+                <span className="text-2xl font-bold text-green-500">RentOrbits</span>
               </Link>
             </div>
 

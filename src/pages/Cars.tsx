@@ -477,7 +477,7 @@ const Cars = () => {
     const img = e.target as HTMLImageElement;
     if (!img.src.includes('placeholder.jpg')) {
       console.error(`Failed to load image: ${img.src}`);
-      img.src = '/CarImages/placeholder.jpg';
+      img.src = process.env.PUBLIC_URL + '/CarImages/placeholder.jpg';
     }
   };
 
@@ -616,13 +616,7 @@ const Cars = () => {
                   src={process.env.PUBLIC_URL + car.image}
                   alt={car.name}
                   className="w-full h-48 object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    if (!target.src.includes('placeholder.jpg')) {
-                      console.error(`Failed to load image: ${target.src}`);
-                      target.src = process.env.PUBLIC_URL + '/CarImages/placeholder.jpg';
-                    }
-                  }}
+                  onError={handleImageError}
                 />
                 <button
                   onClick={() => handleLike(car.id)}

@@ -1,11 +1,11 @@
 {
   "files": {
-    "main.css": "/RentOrbits/static/css/main.3887aafb.css",
-    "main.js": "/RentOrbits/static/js/main.5ba6efb3.js",
+    "main.css": "/RentOrbits/static/css/main.1af48b67.css",
+    "main.js": "/RentOrbits/static/js/main.f77b2710.js",
     "index.html": "/RentOrbits/index.html"
   },
   "entrypoints": [
-    "static/css/main.3887aafb.css",
-    "static/js/main.5ba6efb3.js"
+    "static/css/main.1af48b67.css",
+    "static/js/main.f77b2710.js"
   ]
 }

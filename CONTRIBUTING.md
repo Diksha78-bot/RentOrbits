@@ -19,6 +19,7 @@ cd RentOrbits
 3. Create a descriptive branch:
 
 
+```bash
 git checkout -b feature/short-description
 
 

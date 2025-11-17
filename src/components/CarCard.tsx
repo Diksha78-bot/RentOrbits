@@ -44,6 +44,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, onBookNow, onToggleFavorite, isF
         <button
           onClick={() => onToggleFavorite(car.id)}
           className="absolute top-2 right-2 p-2 bg-gray-800/80 rounded-full hover:bg-gray-700 transition-colors"
+          aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
         >
           <FontAwesomeIcon 
             icon={faHeart} 

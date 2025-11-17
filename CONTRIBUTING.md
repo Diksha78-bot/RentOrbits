@@ -41,9 +41,11 @@ git push origin <branch-name>
 
 ## 3. Coding Standards
 
-* Follow the existing code style.
-* Use consistent indentation.
-* Write clean and maintainable code.
+* **Naming conventions:** Use `camelCase` for variables and functions, `PascalCase` for classes and components, and `UPPER_CASE` for constants.
+* **Line length:** Limit lines to 100 characters.
+* **Indentation:** Use 2 spaces for indentation (no tabs).
+* **Linters/Formatters:** All code must pass [ESLint](https://eslint.org/) and be formatted with [Prettier](https://prettier.io/). Run `npm run lint` and `npm run format` before submitting.
+* Write clean and maintainable code by following SOLID principles and adding comments where necessary.
 
 ## 4. Branching & Commit Guidelines
 

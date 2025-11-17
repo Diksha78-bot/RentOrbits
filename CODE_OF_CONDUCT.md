@@ -1,7 +1,7 @@
 # Contributor Covenant Code of Conduct
 
 ## Our Pledge
-We as members, contributors, and leaders pledge to make participation in RentOrbits a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity, level of experience, nationality, personal appearance, race, religion, or sexual identity.
+We as members, contributors, and leaders pledge to make participation in RentOrbits a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity, level of experience, nationality, personal appearance, race, religion, sexual identity, or sexual orientation.
 
 ## Our Standards
 Examples of behavior that contributes to a positive environment:

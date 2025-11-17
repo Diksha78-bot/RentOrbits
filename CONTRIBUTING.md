@@ -12,10 +12,9 @@ We welcome contributions from everyone! Follow these guidelines to make contribu
 2. Clone your fork:
 
 
+```bash
 git clone https://github.com/<your-username>/RentOrbits.git
 cd RentOrbits
-
-
 3. Create a descriptive branch:
 
 

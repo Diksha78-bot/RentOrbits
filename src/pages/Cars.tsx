@@ -60,7 +60,7 @@ const Cars = () => {
       setShowLoginModal(true);
       return;
     }
-    console.log('Booking car:', car);
+    // TODO: Implement booking flow (e.g., navigate to booking page, open modal, or call booking API)
   };
 
   const handleToggleFavorite = (carId: number) => {

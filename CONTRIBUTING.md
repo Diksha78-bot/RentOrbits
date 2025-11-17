@@ -24,12 +24,12 @@ git checkout -b feature/short-description
 
 4. Make your changes and commit them:
 
+When committing, use descriptive messages with the following prefixes:
 
+```text
 feat: add feature-name
 fix: bug description
 docs: update documentation
-
-
 5. Push your branch to GitHub:
 
 

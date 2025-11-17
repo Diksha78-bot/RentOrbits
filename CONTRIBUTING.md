@@ -33,6 +33,7 @@ docs: update documentation
 5. Push your branch to GitHub:
 
 
+```bash
 git push origin <branch-name>
 
 

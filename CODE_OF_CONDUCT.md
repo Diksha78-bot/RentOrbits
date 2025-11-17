@@ -23,7 +23,16 @@ Project maintainers are responsible for clarifying standards of acceptable behav
 This Code of Conduct applies both within project spaces and in public spaces when an individual is representing the project or its community.
 
 ## Enforcement
-Maintainers who do not follow or enforce the Code of Conduct may be removed from the project community.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the project team at [INSERT CONTACT EMAIL HERE]. All complaints will be reviewed and investigated promptly and fairly.
 
+The project team is obligated to maintain confidentiality with regard to the reporter of an incident. Further details of specific enforcement policies may be posted separately.
+
+Actions the project team may take in response to a reported violation include:
+- Warning the offender
+- Temporary or permanent suspension from the project and its community spaces
+- Removal of inappropriate content
+- Other actions deemed appropriate for the circumstances
+
+Project maintainers who do not follow or enforce the Code of Conduct may be removed from the project team.
 ## Attribution
 This Code of Conduct is adapted from the [Contributor Covenant, version 2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).

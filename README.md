@@ -2,6 +2,19 @@
 
 A modern, responsive car rental website built with React, TypeScript, and Tailwind CSS.
 
+## 📑 Table of Contents
+
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Technologies Used](#technologies-used)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Screenshots](#screenshots)
+- [Future Enhancements](#future-enhancements)
+- [Contributing](#contributing)
+- [License](#license)
+
+
 ## Features
 
 - Responsive design for all devices

@@ -2,13 +2,18 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { authenticateToken } from '../middleware/auth';
+import { 
+  validateUserRegistration, 
+  validateUserLogin, 
+  validateProfileUpdate 
+} from '../middleware/validation';
 import User from '../models/User';
 import Booking from '../models/Booking';
 
 const router = express.Router();
 
 // Register new user
-router.post('/register', async (req, res) => {
+router.post('/register', validateUserRegistration, async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
@@ -18,8 +23,8 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
+    // Hash password with higher cost factor for better security
+    const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create new user
@@ -49,12 +54,13 @@ router.post('/register', async (req, res) => {
       }
     });
   } catch (error) {
+    console.error('Registration error:', error);
     res.status(500).json({ message: 'Error creating user' });
   }
 });
 
 // Login user
-router.post('/login', async (req, res) => {
+router.post('/login', validateUserLogin, async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -87,6 +93,7 @@ router.post('/login', async (req, res) => {
       }
     });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(500).json({ message: 'Error logging in' });
   }
 });
@@ -100,31 +107,42 @@ router.get('/profile', authenticateToken, async (req: any, res) => {
     }
     res.json(user);
   } catch (error) {
+    console.error('Profile fetch error:', error);
     res.status(500).json({ message: 'Error fetching profile' });
   }
 });
 
 // Update user profile
-router.put('/profile', authenticateToken, async (req: any, res) => {
+router.put('/profile', authenticateToken, validateProfileUpdate, async (req: any, res) => {
   try {
     const { name, email } = req.body;
 
-    // Check if email is already taken
-    if (email !== req.user.email) {
+    // Check if email is already taken by another user
+    if (email && email !== req.user.email) {
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         return res.status(400).json({ message: 'Email already in use' });
       }
     }
 
+    // Build update object with only provided fields
+    const updateData: any = {};
+    if (name) updateData.name = name;
+    if (email) updateData.email = email;
+
     const user = await User.findByIdAndUpdate(
       req.user.id,
-      { name, email },
-      { new: true }
+      updateData,
+      { new: true, runValidators: true }
     ).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
     res.json(user);
   } catch (error) {
+    console.error('Profile update error:', error);
     res.status(500).json({ message: 'Error updating profile' });
   }
 });
@@ -137,8 +155,9 @@ router.get('/bookings', authenticateToken, async (req: any, res) => {
       .sort({ startDate: -1 });
     res.json(bookings);
   } catch (error) {
+    console.error('Bookings fetch error:', error);
     res.status(500).json({ message: 'Error fetching bookings' });
   }
 });
 
-export default router; 
+export default router;

@@ -1,18 +1,6 @@
 # RentOrbits - Car Rental Website
 
 A modern, responsive car rental website built with React, TypeScript, and Tailwind CSS.
-## 📑 Table of Contents
-- 🚀 [Features](#features)
-- 🛠️ [Prerequisites](#prerequisites)
-- 📥 [Installation](#installation)
-- 🗂️ [Project Structure](#project-structure)
-- ⚡ [Technologies Used](#technologies-used)
-- 🖼️ [Screenshots](#screenshots)
-- 🌟 [Future Enhancements](#future-enhancements)
-- 🤝 [Contributing](#contributing)
-- 📜 [License](#license)
-
-
 
 ## Features
 
@@ -20,7 +8,7 @@ A modern, responsive car rental website built with React, TypeScript, and Tailwi
 - Car listing with detailed information
 - Contact form for inquiries
 - About page with company information
-- Modern UI with Tailtail CSS
+- Modern UI with Tailwind CSS
 
 ## Prerequisites
 
@@ -52,10 +40,10 @@ The application will be available at `http://localhost:3000`.
 ```
 src/
   ├── components/     # Reusable components
-  ├── pages/          # Page components
-  ├── App.tsx         # Main application component
-  ├── index.tsx       # Entry point
-  └── index.css       # Global styles
+  ├── pages/         # Page components
+  ├── App.tsx        # Main application component
+  ├── index.tsx      # Entry point
+  └── index.css      # Global styles
 ```
 
 ## Technologies Used
@@ -68,12 +56,12 @@ src/
 
 ## Contributing
 
-1. Fork the repository  
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)  
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)  
-4. Push to the branch (`git push origin feature/amazing-feature`)  
-5. Open a Pull Request  
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-This project is licensed under the MIT License — see the LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for details. 

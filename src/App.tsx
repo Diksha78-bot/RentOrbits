@@ -27,10 +27,10 @@ const App = () => {
       <Router>
         <div className="flex flex-col min-h-screen bg-sage-50 text-forest-900">
           <Navbar />
-          <main className="flex-grow">
+          <main className="flex-grow pt-16">
             <Suspense fallback={
-              <div className="flex items-center justify-center min-h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-forest-600"></div>
+              <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
               </div>
             }>
               <Routes>

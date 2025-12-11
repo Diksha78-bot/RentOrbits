@@ -29,12 +29,15 @@ const Home = () => {
                 Discover premium cars and properties for rent. Experience luxury and comfort at competitive prices.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link 
-                  to="/cars" 
-                  className="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors duration-300 text-center"
-                >
-                  Browse Cars
-                </Link>
+              <Link 
+                to="/cars" 
+                className="bg-primary-600 text-white px-8 py-4 rounded-lg text-lg font-semibold 
+                transition-colors duration-300 text-center 
+                hover:bg-primary-700 hover:text-white"
+              >
+              Browse Cars
+              </Link>
+
                 <Link 
                   to="/properties" 
                   className="bg-white hover:bg-gray-100 text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors duration-300 text-center"

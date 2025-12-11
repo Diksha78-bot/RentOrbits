@@ -4,8 +4,15 @@ const API_URL = process.env.REACT_APP_API_URL || 'https://rentorbits-api.onrende
 
 // Car services
 export const getCars = async () => {
-  const response = await axios.get(`${API_URL}/cars`);
-  return response.data;
+  try {
+    // Try API first, fallback to local JSON
+    const response = await axios.get(`${API_URL}/cars`);
+    return response.data;
+  } catch (error) {
+    // Fallback to local JSON file
+    const response = await axios.get('/data/cars.json');
+    return response.data;
+  }
 };
 
 export const getCarById = async (id: string) => {

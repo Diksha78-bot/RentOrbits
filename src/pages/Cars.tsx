@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faStar, faGasPump, faCog, faUsers, faMapMarkerAlt, faHistory, faHeart, faSearch, faFilter, faCalculator, faExchangeAlt, faRoad } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faStar, faGasPump, faCog, faUsers, faHistory, faHeart, faCalculator, faRoad } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useAuth } from '../context/AuthContext';
@@ -47,16 +47,16 @@ const Cars = () => {
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [cancelReason, setCancelReason] = useState<string>('');
-  const [selectedCity, setSelectedCity] = useState<string>('all');
+  const [selectedCity] = useState<string>('all');
   const [selectedType, setSelectedType] = useState<string>('all');
   const { user } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [showPriceCalculator, setShowPriceCalculator] = useState(false);
-  const [favorites, setFavorites] = useState<number[]>([]);
+
   const [showBookingHistory, setShowBookingHistory] = useState(false);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
-  const [sortBy, setSortBy] = useState<'price' | 'rating' | 'newest'>('newest');
+  const [priceRange] = useState<[number, number]>([0, 10000]);
+  const [sortBy] = useState<'price' | 'rating' | 'newest'>('newest');
   const [notification, setNotification] = useState<{
     message: string;
     type: 'success' | 'error';
@@ -67,10 +67,10 @@ const Cars = () => {
   const [selectedSeats, setSelectedSeats] = useState('');
   const [onlyAvailable, setOnlyAvailable] = useState(false);
   const [likedCars, setLikedCars] = useState<number[]>([]);
-  const [showFavorites, setShowFavorites] = useState(false);
+  const [, setShowFavorites] = useState(false);
   const [showFavoritesDropdown, setShowFavoritesDropdown] = useState(false);
 
-  const cities = ['Islampur'];
+
   const carTypes = ['Sedan', 'SUV', 'Hatchback', 'Luxury'];
   const cancelReasons = [
     'Change of plans',
@@ -358,6 +358,7 @@ const Cars = () => {
     // Preload images
     const imagePaths = cars.map(car => car.image);
     preloadImages(imagePaths);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleBookNow = (car: Car) => {
@@ -433,13 +434,7 @@ const Cars = () => {
     return car.price * days;
   };
 
-  const toggleFavorite = (carId: number) => {
-    setFavorites(prev => 
-      prev.includes(carId) 
-        ? prev.filter(id => id !== carId)
-        : [...prev, carId]
-    );
-  };
+
 
   const filteredCars = cars.filter(car => {
     if (selectedCity !== 'all' && car.city !== selectedCity) return false;

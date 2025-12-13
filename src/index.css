@@ -49,8 +49,12 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700 px-4 py-2 rounded-lg transition-colors duration-300;
+    @apply bg-[var(--primary)] text-white 
+           hover:bg-[var(--primary-dark)] hover:text-white 
+           px-5 py-3 rounded-lg 
+           transition duration-300;
   }
+  
   
   .btn-secondary {
     @apply bg-neutral-200 text-neutral-900 hover:bg-neutral-300 dark:bg-neutral-700 dark:text-neutral-50 dark:hover:bg-neutral-600 px-4 py-2 rounded-lg transition-colors duration-300;
@@ -131,6 +135,69 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Navbar Animations */
+.animate-slide-down {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dropdown Animations */
+.animate-in {
+  animation-fill-mode: both;
+}
+
+.slide-in-from-top-2 {
+  animation: slideInFromTop 0.2s ease-out;
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Mobile Menu Backdrop */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+
+/* Smooth transitions for all interactive elements */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Premium shadow effects */
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Glassmorphism effect for sticky navbar */
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+}
+
+/* Active link indicator */
+.border-l-4 {
+  border-left-width: 4px;
 }
 
 /* Responsive Design */
@@ -240,7 +307,38 @@ input, select, textarea {
 
 /* Add proper transition styles */
 * {
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+/* Navbar specific styles */
+.navbar-sticky {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Mobile menu animation improvements */
+@media (max-width: 768px) {
+  .mobile-menu-enter {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  
+  .mobile-menu-enter-active {
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 300ms ease-out, opacity 300ms ease-out;
+  }
+  
+  .mobile-menu-exit {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  .mobile-menu-exit-active {
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: transform 300ms ease-in, opacity 300ms ease-in;
+  }
 }
 
 /* Add proper dark mode support */
@@ -257,3 +355,4 @@ input, select, textarea {
     color: black;
   }
 } 
+

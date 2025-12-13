@@ -376,6 +376,57 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+RentOrbits/
+│
+├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── feature-request.md
+│   │   ├── bug-report.md
+│   │   ├── documentation-issue.md
+│   │   └── pull_request_template.md
+│   └── SECURITY.md
+│
+├── backend/                      # Node/Express / API
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── src/
+│   ├── .gitignore
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── server.ts
+│   └── tsconfig.json
+│
+├── public/                       # Frontend static assets
+│   ├── CarImages/
+│   ├── data/
+│   ├── images/
+│   ├── 404.html
+│   ├── index.html
+│   ├── logo.png
+│   ├── logo.svg
+│   └── manifest.json
+│
+├── src/                          # Frontend source (React + TS)
+│   ├── components/
+│   ├── context/
+│   ├── pages/
+│   ├── services/
+│   ├── utils/
+│   ├── App.tsx
+│   ├── index.tsx
+│   ├── index.css
+│   └── theme.ts
+│
+├── .gitignore
+├── CONTRIBUTING.md               
+├── LICENSE                       
+├── README.md                     
+├── package.json                  
+├── package-lock.json
+├── tailwind.config.js
+└── tsconfig.json
+
 ```
 
 ---

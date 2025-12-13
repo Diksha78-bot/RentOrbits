@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faFilter } from '@fortawesome/free-solid-svg-icons';
-import { getCars } from '../services/api';
-import CarCard from '../components/CarCard';
-import CarSkeleton from '../components/CarSkeleton';
-import ErrorState from '../components/ErrorState';
+import { faTimes, faStar, faGasPump, faCog, faUsers, faHistory, faHeart, faCalculator, faRoad } from '@fortawesome/free-solid-svg-icons';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { useAuth } from '../context/AuthContext';
 import LoginModal from '../components/LoginModal';
 
@@ -24,21 +22,326 @@ interface Car {
 }
 
 const Cars = () => {
-  const [cars, setCars] = useState<Car[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedType, setSelectedType] = useState('');
-  const [selectedBrand, setSelectedBrand] = useState('');
-  const [sortBy, setSortBy] = useState<'price' | 'rating' | 'name'>('name');
-  const [favorites, setFavorites] = useState<number[]>([]);
-  const [showLoginModal, setShowLoginModal] = useState(false);
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
-  
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [cancelReason, setCancelReason] = useState<string>('');
+  const [selectedCity] = useState<string>('all');
+  const [selectedType, setSelectedType] = useState<string>('all');
   const { user } = useAuth();
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showPriceCalculator, setShowPriceCalculator] = useState(false);
+
+  const [showBookingHistory, setShowBookingHistory] = useState(false);
+  const [priceRange] = useState<[number, number]>([0, 10000]);
+  const [sortBy] = useState<'price' | 'rating' | 'newest'>('newest');
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: 'success' | 'error';
+  } | null>(null);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [selectedTransmission, setSelectedTransmission] = useState('');
+  const [selectedFuelType, setSelectedFuelType] = useState('');
+  const [selectedSeats, setSelectedSeats] = useState('');
+  const [onlyAvailable, setOnlyAvailable] = useState(false);
+  const [likedCars, setLikedCars] = useState<number[]>([]);
+  const [, setShowFavorites] = useState(false);
+  const [showFavoritesDropdown, setShowFavoritesDropdown] = useState(false);
+
+
+  const carTypes = ['Sedan', 'SUV', 'Hatchback', 'Luxury'];
+  const cancelReasons = [
+    'Change of plans',
+    'Found a better option',
+    'Emergency situation',
+    'Price too high',
+    'Vehicle not suitable',
+    'Other'
+  ];
+
+  const cars: Car[] = [
+    // Sedans
+    {
+      id: 1,
+      name: 'Toyota Camry',
+      type: 'Sedan',
+      price: 2500,
+      image: '/CarImages/Toyota Camry.jpg',
+      rating: 4.5,
+      reviews: 120,
+      city: 'Islampur',
+      transmission: 'Automatic',
+      fuelType: 'Petrol',
+      seats: 5,
+      condition: 'Excellent',
+      engineType: '2.5L 4-cylinder',
+      year: 2023,
+      mileage: '15,000 km',
+      features: ['Leather Seats', 'Sunroof', 'Apple CarPlay', 'Android Auto'],
+      available: true
+    },
+    {
+      id: 2,
+      name: 'Honda Civic',
+      type: 'Sedan',
+      price: 2200,
+      image: '/CarImages/Honda Civic.jpg',
+      rating: 4.3,
+      reviews: 98,
+      city: 'Islampur',
+      transmission: 'Automatic',
+      fuelType: 'Petrol',
+      seats: 5,
+      condition: 'Very Good',
+      engineType: '1.8L i-VTEC',
+      year: 2022,
+      mileage: '25,000 km',
+      features: ['Smart Entry', 'Lane Departure Warning', 'Backup Camera'],
+      available: true
+    },
+    {
+      id: 3,
+      name: 'Hyundai Verna',
+      type: 'Sedan',
+      price: 2000,
+      image: '/CarImages/Hyundai Verna.jpg',
+      rating: 4.4,
+      reviews: 85,
+      city: 'Islampur',
+      transmission: 'Automatic',
+      fuelType: 'Petrol',
+      seats: 5,
+      condition: 'Excellent',
+      engineType: '1.5L CRDi',
+      year: 2023,
+      mileage: '12,000 km',
+      features: ['Ventilated Seats', 'Wireless Charging', 'Digital Cluster'],
+      available: true
+    },
+    // SUVs
+    {
+      id: 4,
+      name: 'Honda CR-V',
+      type: 'SUV',
+      price: 3000,
+      image: '/CarImages/Honda CR-V.jpg',
+      rating: 4.7,
+      reviews: 95,
+      city: 'Islampur',
+      transmission: 'Automatic',
+      fuelType: 'Diesel',
+      seats: 5,
+      condition: 'Excellent',
+      engineType: '1.6L Turbo Diesel',
+      year: 2023,
+      mileage: '18,000 km',
+      features: ['Panoramic Sunroof', 'AWD', 'Wireless Charging'],
+      available: true
+    },
+    {
+      id: 5,
+      name: 'Toyota Fortuner',
+      type: 'SUV',
+      price: 3500,
+      image: '/CarImages/Toyota Fortuner.jpg',
+      rating: 4.8,
+      reviews: 150,
+      city: 'Islampur',
+      transmission: 'Automatic',
+      fuelType: 'Diesel',
+      seats: 7,
+      condition: 'Excellent',
+      engineType: '2.8L Turbo Diesel',
+      year: 2023,
+      mileage: '12,000 km',
+      features: ['4x4', 'Premium Sound System', 'Leather Interior'],
+      available: true
+    },
+    {
+      id: 6,
+      name: 'Mahindra XUV700',
+      type: 'SUV',
+      price: 2800,
+      image: '/CarImages/Mahindra XUV700.jpg',
+      rating: 4.6,
+      reviews: 110,
+      city: 'Islampur',
+      transmission: 'Automatic',
+      fuelType: 'Diesel',
+      seats: 7,
+      condition: 'Excellent',
+      engineType: '2.2L mHawk',
+      year: 2023,
+      mileage: '20,000 km',
+      features: ['ADAS', 'Panoramic Sunroof', 'Connected Car Tech'],
+      available: true
+    },
+    {
+      id: 7,
+      name: 'Hyundai Creta',
+      type: 'SUV',
+      price: 2400,
+      image: '/CarImages/Hyundai Creta.jpg',
+      rating: 4.5,
+      reviews: 130,
+      city: 'Islampur',
+      transmission: 'Automatic',
+      fuelType: 'Petrol',
+      seats: 5,
+      condition: 'Very Good',
+      engineType: '1.4L Turbo',
+      year: 2023,
+      mileage: '15,000 km',
+      features: ['Ventilated Seats', 'Bose Sound System', 'BlueLink'],
+      available: true
+    },
+    // Hatchbacks
+    {
+      id: 8,
+      name: 'Maruti Swift',
+      type: 'Hatchback',
+      price: 1500,
+      image: '/CarImages/Maruti Swift.jpg',
+      rating: 4.3,
+      reviews: 200,
+      city: 'Islampur',
+      transmission: 'Manual',
+      fuelType: 'Petrol',
+      seats: 5,
+      condition: 'Very Good',
+      engineType: '1.2L K-Series',
+      year: 2022,
+      mileage: '30,000 km',
+      features: ['Touchscreen Display', 'Apple CarPlay', 'Keyless Entry'],
+      available: true
+    },
+    {
+      id: 9,
+      name: 'Hyundai i20',
+      type: 'Hatchback',
+      price: 1700,
+      image: '/CarImages/Hyundai i20.jpg',
+      rating: 4.4,
+      reviews: 180,
+      city: 'Islampur',
+      transmission: 'Automatic',
+      fuelType: 'Petrol',
+      seats: 5,
+      condition: 'Excellent',
+      engineType: '1.2L Kappa',
+      year: 2023,
+      mileage: '15,000 km',
+      features: ['Sunroof', 'BlueLink Connected', 'Wireless Charging'],
+      available: true
+    },
+    {
+      id: 10,
+      name: 'Tata Altroz',
+      type: 'Hatchback',
+      price: 1600,
+      image: '/CarImages/Tata Altroz.jpg',
+      rating: 4.2,
+      reviews: 150,
+      city: 'Islampur',
+      transmission: 'Manual',
+      fuelType: 'Petrol',
+      seats: 5,
+      condition: 'Very Good',
+      engineType: '1.2L Revotron',
+      year: 2023,
+      mileage: '18,000 km',
+      features: ['iRA Connected Car', '5-Star Safety', 'Harman Audio'],
+      available: true
+    },
+    // Luxury Cars
+    {
+      id: 11,
+      name: 'BMW 5 Series',
+      type: 'Luxury',
+      price: 5000,
+      image: '/CarImages/BMW 5 Series.jpg',
+      rating: 4.8,
+      reviews: 75,
+      city: 'Islampur',
+      transmission: 'Automatic',
+      fuelType: 'Petrol',
+      seats: 5,
+      condition: 'Excellent',
+      engineType: '2.0L TwinPower Turbo',
+      year: 2023,
+      mileage: '10,000 km',
+      features: ['Premium Sound', 'Massage Seats', 'Gesture Control'],
+      available: true
+    },
+    {
+      id: 12,
+      name: 'Mercedes-Benz E-Class',
+      type: 'Luxury',
+      price: 5500,
+      image: '/CarImages/Mercedes-Benz E-Class.jpg',
+      rating: 4.9,
+      reviews: 85,
+      city: 'Islampur',
+      transmission: 'Automatic',
+      fuelType: 'Petrol',
+      seats: 5,
+      condition: 'Excellent',
+      engineType: '3.0L V6',
+      year: 2023,
+      mileage: '8,000 km',
+      features: ['Air Suspension', 'Burmester Sound', 'Panoramic Roof'],
+      available: true
+    },
+    {
+      id: 13,
+      name: 'Audi A6',
+      type: 'Luxury',
+      price: 5200,
+      image: '/CarImages/Audi A6.jpg',
+      rating: 4.7,
+      reviews: 70,
+      city: 'Islampur',
+      transmission: 'Automatic',
+      fuelType: 'Petrol',
+      seats: 5,
+      condition: 'Excellent',
+      engineType: '2.0L TFSI',
+      year: 2023,
+      mileage: '12,000 km',
+      features: ['Matrix LED', 'Bang & Olufsen', 'Virtual Cockpit'],
+      available: true
+    },
+    {
+      id: 14,
+      name: 'Volvo S90',
+      type: 'Luxury',
+      price: 4800,
+      image: '/CarImages/Volvo S90.jpg',
+      rating: 4.6,
+      reviews: 65,
+      city: 'Islampur',
+      transmission: 'Automatic',
+      fuelType: 'Hybrid',
+      seats: 5,
+      condition: 'Excellent',
+      engineType: '2.0L T8 Hybrid',
+      year: 2023,
+      mileage: '15,000 km',
+      features: ['Pilot Assist', 'Bowers & Wilkins', 'Air Purifier'],
+      available: true
+    }
+  ];
 
   useEffect(() => {
-    fetchCars();
+    // Preload images
+    const imagePaths = cars.map(car => car.image);
+    preloadImages(imagePaths);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchCars = async () => {
@@ -63,13 +366,70 @@ const Cars = () => {
     // TODO: Implement booking flow (e.g., navigate to booking page, open modal, or call booking API)
   };
 
-  const handleToggleFavorite = (carId: number) => {
-    setFavorites(prev => 
-      prev.includes(carId) 
-        ? prev.filter(id => id !== carId)
-        : [...prev, carId]
-    );
+  const handleLoginSuccess = () => {
+    setShowLoginModal(false);
+    if (selectedCar) {
+      setShowBookingModal(true);
+    }
   };
+
+  const handleConfirmBooking = async () => {
+    if (selectedCar && startDate && endDate) {
+      const newBooking: Booking = {
+        id: bookings.length + 1,
+        carId: selectedCar.id,
+        startDate,
+        endDate,
+        status: 'active',
+        totalPrice: calculateTotalPrice(selectedCar, startDate, endDate),
+        bookingId: '',
+        name: selectedCar.name,
+        type: selectedCar.type,
+        price: selectedCar.price,
+        image: selectedCar.image,
+        rating: selectedCar.rating,
+        reviews: selectedCar.reviews,
+        city: selectedCar.city,
+        transmission: selectedCar.transmission,
+        fuelType: selectedCar.fuelType,
+        seats: selectedCar.seats,
+        condition: selectedCar.condition,
+        engineType: selectedCar.engineType,
+        year: selectedCar.year,
+        mileage: selectedCar.mileage,
+        features: selectedCar.features,
+        available: selectedCar.available
+      };
+      setBookings([...bookings, newBooking]);
+      showNotification('Booking successful!', 'success');
+      setShowBookingModal(false);
+      setSelectedCar(null);
+      setStartDate(null);
+      setEndDate(null);
+    }
+  };
+
+  const handleCancelBooking = async () => {
+    if (selectedBooking && cancelReason) {
+      const updatedBookings = bookings.map(booking =>
+        booking.id === selectedBooking.id
+          ? { ...booking, status: 'cancelled' as const }
+          : booking
+      );
+      setBookings(updatedBookings);
+      showNotification('Booking cancelled successfully!', 'success');
+      setShowCancelModal(false);
+      setSelectedBooking(null);
+      setCancelReason('');
+    }
+  };
+
+  const calculateTotalPrice = (car: Car, start: Date, end: Date) => {
+    const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+    return car.price * days;
+  };
+
+
 
   const filteredAndSortedCars = cars
     .filter(car => {

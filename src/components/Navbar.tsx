@@ -9,7 +9,6 @@ import {
   faHome,
   faInfoCircle,
   faEnvelope,
-  faMapMarkerAlt,
   faHeart,
   faCar,
   faChevronDown,

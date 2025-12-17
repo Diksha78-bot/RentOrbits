@@ -31,21 +31,35 @@ A modern, responsive car rental website built with React, TypeScript, and Tailwi
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/rentorbits.git
-cd rentorbits
+git clone https://github.com/Diksha78-bot/RentOrbits.git
+cd RentOrbits
 ```
 
-2. Install dependencies:
+2. Install dependencies (from root directory):
 ```bash
 npm install
 ```
 
-3. Start the development server:
+3. Start the development servers:
+
+**Both frontend and backend together:**
 ```bash
 npm start
 ```
 
-The application will be available at `http://localhost:3000`.
+**Or run individually:**
+
+Frontend only:
+```bash
+npm run frontend
+```
+
+Backend only:
+```bash
+npm run backend
+```
+
+Frontend will be available at `http://localhost:3000` and backend API at configured port (typically `http://localhost:5000`).
 
 ## Project Structure
 
@@ -60,56 +74,69 @@ RentOrbits/
 │   │   └── pull_request_template.md
 │   └── SECURITY.md
 │
-├── backend/                      # Node/Express / API
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
+├── frontend/                     # React frontend application
 │   ├── src/
+│   │   ├── components/           # Reusable React components
+│   │   ├── context/              # React Context (Auth context)
+│   │   ├── pages/                # Page components
+│   │   ├── services/             # API and Firebase services
+│   │   ├── utils/                # Utility functions
+│   │   ├── App.tsx
+│   │   ├── index.tsx
+│   │   ├── index.css
+│   │   └── theme.ts
+│   ├── public/                   # Static assets
+│   │   ├── CarImages/
+│   │   ├── data/
+│   │   ├── images/
+│   │   ├── 404.html
+│   │   ├── index.html
+│   │   ├── logo.png
+│   │   ├── logo.svg
+│   │   └── manifest.json
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── tsconfig.json
+│   └── tailwind.config.js
+│
+├── backend/                      # Node/Express API server
+│   ├── src/                      # Backend source code
+│   ├── middleware/               # Express middleware (auth, etc)
+│   ├── models/                   # Database models (User, Car, Booking)
+│   ├── routes/                   # API routes
 │   ├── .gitignore
 │   ├── package.json
 │   ├── package-lock.json
 │   ├── server.ts
 │   └── tsconfig.json
 │
-├── public/                       # Frontend static assets
-│   ├── CarImages/
-│   ├── data/
-│   ├── images/
-│   ├── 404.html
-│   ├── index.html
-│   ├── logo.png
-│   ├── logo.svg
-│   └── manifest.json
-│
-├── src/                          # Frontend source (React + TS)
-│   ├── components/
-│   ├── context/
-│   ├── pages/
-│   ├── services/
-│   ├── utils/
-│   ├── App.tsx
-│   ├── index.tsx
-│   ├── index.css
-│   └── theme.ts
-│
 ├── .gitignore
 ├── CONTRIBUTING.md               
 ├── LICENSE                       
 ├── README.md                     
-├── package.json                  
-├── package-lock.json
-├── tailwind.config.js
-└── tsconfig.json
+├── package.json                  # Root monorepo config
+├── node_modules/
+└── .env                          # Environment variables
 
 ```
 
 ## Technologies Used
 
-- React
+**Frontend:**
+- React 18
 - TypeScript
 - Tailwind CSS
 - React Router
 - Axios (for API calls)
+- Firebase (Authentication)
+
+**Backend:**
+- Node.js
+- Express.js
+- TypeScript
+- MongoDB (Mongoose)
+- JWT (Authentication)
+- BCryptJS (Password hashing)
 
 ## Contributing
 

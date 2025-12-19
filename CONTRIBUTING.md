@@ -8,36 +8,48 @@ We welcome contributions from everyone! Follow these guidelines to make contribu
 - Include screenshots or logs if helpful.
 
 ## 2. Submitting Pull Requests
-1. Fork the repository.  
-2. Clone your fork:
-
-
+**1️⃣ Clone your fork**
 ```bash
 git clone https://github.com/<your-username>/RentOrbits.git
 cd RentOrbits
-3. Create a descriptive branch:
+```
 
+This command clones your forked repository and navigates into the project directory.
 
+**2️⃣ Create a descriptive branch**
 ```bash
 git checkout -b feature/short-description
+```
+
+Create a new branch that clearly describes the feature or fix you’re working on.
+
+**3️⃣ Make changes and commit them**
+
+After making your changes, commit them with a descriptive message.
+
+✅ Use the following prefixes for consistency:
+- feature: add feature-name
+- fix: resolve bug description
+- docs: update documentation
 
 
-4. Make your changes and commit them:
-
-When committing, use descriptive messages with the following prefixes:
-
-```text
-feat: add feature-name
-fix: bug description
-docs: update documentation
-5. Push your branch to GitHub:
-
-
+Example:
 ```bash
-git push origin <branch-name>
+git commit -m "feat: add user authentication flow"
+```
+**4️⃣ Push your branch to GitHub**
+```bash
+git push origin feature/short-description
+```
 
+This pushes your local branch to your GitHub fork.
 
-6. Open a Pull Request from your branch to the main repository.
+**5️⃣ Open a Pull Request**
+
+- Go to your fork on GitHub
+- Click Compare & Pull Request
+- Submit a PR from your branch to the main branch of the original repository
+- Add a clear title and description of your changes
 
 ## 3. Coding Standards
 

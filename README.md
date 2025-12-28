@@ -61,6 +61,12 @@ npm run backend
 
 Frontend will be available at `http://localhost:3000` and backend API at configured port (typically `http://localhost:5000`).
 
+## Environment Variables
+
+Create a `.env` file in the root directory based on `.env.example` and add your own configuration values.
+
+> Note: Do not commit `.env` files to version control.
+
 ## Project Structure
 
 ```

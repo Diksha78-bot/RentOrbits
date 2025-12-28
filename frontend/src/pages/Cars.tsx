@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faStar, faGasPump, faCog, faUsers, faHistory, faHeart, faCalculator, faRoad } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faFilter } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useAuth } from '../context/AuthContext';
 import LoginModal from '../components/LoginModal';
+import CarCard from '../components/CarCard';
 
 interface Car {
   id: number;
@@ -19,6 +20,38 @@ interface Car {
   fuelType: string;
   seats: number;
   available: boolean;
+  city?: string;
+  condition?: string;
+  engineType?: string;
+  year?: number;
+  mileage?: string;
+  features?: string[];
+}
+
+interface Booking {
+  id: number;
+  carId: number;
+  startDate: Date;
+  endDate: Date;
+  status: 'active' | 'cancelled';
+  totalPrice: number;
+  bookingId: string;
+  name: string;
+  type: string;
+  price: number;
+  image: string;
+  rating: number;
+  reviews: number;
+  city?: string;
+  transmission: string;
+  fuelType: string;
+  seats: number;
+  condition?: string;
+  engineType?: string;
+  year?: number;
+  mileage?: string;
+  features?: string[];
+  available: boolean;
 }
 
 const Cars = () => {
@@ -29,46 +62,55 @@ const Cars = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
-  const [cancelReason, setCancelReason] = useState<string>('');
-  const [selectedCity] = useState<string>('all');
-  const [selectedType, setSelectedType] = useState<string>('all');
+  const [cancelReason, setCancelReason] = useState('');
+  const [bookings, setBookings] = useState<Booking[]>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('carBookings');
+      return stored ? JSON.parse(stored) : [];
+    }
+    return [];
+  });
+  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [selectedType, setSelectedType] = useState<string>('');
   const { user } = useAuth();
-  const [bookings, setBookings] = useState<Booking[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showPriceCalculator, setShowPriceCalculator] = useState(false);
-
-  const [showBookingHistory, setShowBookingHistory] = useState(false);
-  const [priceRange] = useState<[number, number]>([0, 10000]);
-  const [sortBy] = useState<'price' | 'rating' | 'newest'>('newest');
-  const [notification, setNotification] = useState<{
-    message: string;
-    type: 'success' | 'error';
-  } | null>(null);
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-  const [selectedTransmission, setSelectedTransmission] = useState('');
-  const [selectedFuelType, setSelectedFuelType] = useState('');
-  const [selectedSeats, setSelectedSeats] = useState('');
-  const [onlyAvailable, setOnlyAvailable] = useState(false);
-  const [likedCars, setLikedCars] = useState<number[]>([]);
-  const [, setShowFavorites] = useState(false);
-  const [showFavoritesDropdown, setShowFavoritesDropdown] = useState(false);
+  const [sortBy, setSortBy] = useState<'price' | 'rating' | 'newest'>('newest');
+  const [selectedBrand, setSelectedBrand] = useState<string>('');
+  const [favorites, setFavorites] = useState<number[]>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('favoritesCars');
+      return stored ? JSON.parse(stored) : [];
+    }
+    return [];
+  });
 
 
-  const carTypes = ['Sedan', 'SUV', 'Hatchback', 'Luxury'];
-  const cancelReasons = [
-    'Change of plans',
-    'Found a better option',
-    'Emergency situation',
-    'Price too high',
-    'Vehicle not suitable',
-    'Other'
-  ];
+  // Helper functions
+  const preloadImages = (imagePaths: string[]) => {
+    imagePaths.forEach(path => {
+      const img = new Image();
+      img.src = path;
+    });
+  };
+
+  const handleToggleFavorite = (carId: number) => {
+    setFavorites(prev => {
+      const updated = prev.includes(carId)
+        ? prev.filter(id => id !== carId)
+        : [...prev, carId];
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('favoritesCars', JSON.stringify(updated));
+      }
+      return updated;
+    });
+  };
 
   const cars: Car[] = [
     // Sedans
     {
       id: 1,
       name: 'Toyota Camry',
+      brand: 'Toyota',
       type: 'Sedan',
       price: 2500,
       image: '/CarImages/Toyota Camry.jpg',
@@ -88,6 +130,7 @@ const Cars = () => {
     {
       id: 2,
       name: 'Honda Civic',
+      brand: 'Honda',
       type: 'Sedan',
       price: 2200,
       image: '/CarImages/Honda Civic.jpg',
@@ -107,6 +150,7 @@ const Cars = () => {
     {
       id: 3,
       name: 'Hyundai Verna',
+      brand: 'Hyundai',
       type: 'Sedan',
       price: 2000,
       image: '/CarImages/Hyundai Verna.jpg',
@@ -127,6 +171,7 @@ const Cars = () => {
     {
       id: 4,
       name: 'Honda CR-V',
+      brand: 'Honda',
       type: 'SUV',
       price: 3000,
       image: '/CarImages/Honda CR-V.jpg',
@@ -146,6 +191,7 @@ const Cars = () => {
     {
       id: 5,
       name: 'Toyota Fortuner',
+      brand: 'Toyota',
       type: 'SUV',
       price: 3500,
       image: '/CarImages/Toyota Fortuner.jpg',
@@ -165,6 +211,7 @@ const Cars = () => {
     {
       id: 6,
       name: 'Mahindra XUV700',
+      brand: 'Mahindra',
       type: 'SUV',
       price: 2800,
       image: '/CarImages/Mahindra XUV700.jpg',
@@ -184,6 +231,7 @@ const Cars = () => {
     {
       id: 7,
       name: 'Hyundai Creta',
+      brand: 'Hyundai',
       type: 'SUV',
       price: 2400,
       image: '/CarImages/Hyundai Creta.jpg',
@@ -204,6 +252,7 @@ const Cars = () => {
     {
       id: 8,
       name: 'Maruti Swift',
+      brand: 'Maruti',
       type: 'Hatchback',
       price: 1500,
       image: '/CarImages/Maruti Swift.jpg',
@@ -223,6 +272,7 @@ const Cars = () => {
     {
       id: 9,
       name: 'Hyundai i20',
+      brand: 'Hyundai',
       type: 'Hatchback',
       price: 1700,
       image: '/CarImages/Hyundai i20.jpg',
@@ -242,6 +292,7 @@ const Cars = () => {
     {
       id: 10,
       name: 'Tata Altroz',
+      brand: 'Tata',
       type: 'Hatchback',
       price: 1600,
       image: '/CarImages/Tata Altroz.jpg',
@@ -262,6 +313,7 @@ const Cars = () => {
     {
       id: 11,
       name: 'BMW 5 Series',
+      brand: 'BMW',
       type: 'Luxury',
       price: 5000,
       image: '/CarImages/BMW 5 Series.jpg',
@@ -281,6 +333,7 @@ const Cars = () => {
     {
       id: 12,
       name: 'Mercedes-Benz E-Class',
+      brand: 'Mercedes-Benz',
       type: 'Luxury',
       price: 5500,
       image: '/CarImages/Mercedes-Benz E-Class.jpg',
@@ -300,6 +353,7 @@ const Cars = () => {
     {
       id: 13,
       name: 'Audi A6',
+      brand: 'Audi',
       type: 'Luxury',
       price: 5200,
       image: '/CarImages/Audi A6.jpg',
@@ -319,6 +373,7 @@ const Cars = () => {
     {
       id: 14,
       name: 'Volvo S90',
+      brand: 'Volvo',
       type: 'Luxury',
       price: 4800,
       image: '/CarImages/Volvo S90.jpg',
@@ -337,6 +392,78 @@ const Cars = () => {
     }
   ];
 
+  const calculateTotalPrice = (car: Car, start: Date | null, end: Date | null) => {
+    if (!start || !end) return 0;
+    const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+    return days * car.price;
+  };
+
+  const showNotification = (message: string, type: 'success' | 'error') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 3000);
+  };
+
+  const handleBookNow = (car: Car) => {
+    if (!user) {
+      setShowLoginModal(true);
+    } else {
+      setSelectedCar(car);
+      setShowBookingModal(true);
+    }
+  };
+
+  const handleConfirmBooking = () => {
+    if (!selectedCar || !startDate || !endDate || !user) {
+      showNotification('Please fill in all required fields', 'error');
+      return;
+    }
+
+    if (endDate < startDate) {
+      showNotification('End date must be after start date', 'error');
+      return;
+    }
+
+    const newBooking: Booking = {
+      ...selectedCar,
+      id: bookings.length + 1,
+      carId: selectedCar.id,
+      startDate,
+      endDate,
+      status: 'active',
+      totalPrice: calculateTotalPrice(selectedCar, startDate, endDate),
+      bookingId: `BK${Date.now()}`,
+    };
+
+    const updatedBookings = [...bookings, newBooking];
+    setBookings(updatedBookings);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('carBookings', JSON.stringify(updatedBookings));
+    }
+    showNotification('Booking confirmed! Check your profile for details.', 'success');
+    setShowBookingModal(false);
+    setStartDate(null);
+    setEndDate(null);
+  };
+
+  const handleCancelBooking = () => {
+    if (!selectedBooking || !cancelReason) {
+      showNotification('Please provide a cancellation reason', 'error');
+      return;
+    }
+
+    const updatedBookings = bookings.map((b) =>
+      b.id === selectedBooking.id ? { ...b, status: 'cancelled' as const } : b
+    );
+    setBookings(updatedBookings);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('carBookings', JSON.stringify(updatedBookings));
+    }
+    showNotification('Booking cancelled successfully', 'success');
+    setShowCancelModal(false);
+    setCancelReason('');
+    setSelectedBooking(null);
+  };
+
   useEffect(() => {
     // Preload images
     const imagePaths = cars.map(car => car.image);
@@ -344,97 +471,10 @@ const Cars = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const fetchCars = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await getCars();
-      setCars(data);
-    } catch (err) {
-      setError('Failed to load car listings. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleBookNow = (car: Car) => {
-    if (!user) {
-      setSelectedCar(car);
-      setShowLoginModal(true);
-      return;
-    }
-    // TODO: Implement booking flow (e.g., navigate to booking page, open modal, or call booking API)
-  };
-
-  const handleLoginSuccess = () => {
-    setShowLoginModal(false);
-    if (selectedCar) {
-      setShowBookingModal(true);
-    }
-  };
-
-  const handleConfirmBooking = async () => {
-    if (selectedCar && startDate && endDate) {
-      const newBooking: Booking = {
-        id: bookings.length + 1,
-        carId: selectedCar.id,
-        startDate,
-        endDate,
-        status: 'active',
-        totalPrice: calculateTotalPrice(selectedCar, startDate, endDate),
-        bookingId: '',
-        name: selectedCar.name,
-        type: selectedCar.type,
-        price: selectedCar.price,
-        image: selectedCar.image,
-        rating: selectedCar.rating,
-        reviews: selectedCar.reviews,
-        city: selectedCar.city,
-        transmission: selectedCar.transmission,
-        fuelType: selectedCar.fuelType,
-        seats: selectedCar.seats,
-        condition: selectedCar.condition,
-        engineType: selectedCar.engineType,
-        year: selectedCar.year,
-        mileage: selectedCar.mileage,
-        features: selectedCar.features,
-        available: selectedCar.available
-      };
-      setBookings([...bookings, newBooking]);
-      showNotification('Booking successful!', 'success');
-      setShowBookingModal(false);
-      setSelectedCar(null);
-      setStartDate(null);
-      setEndDate(null);
-    }
-  };
-
-  const handleCancelBooking = async () => {
-    if (selectedBooking && cancelReason) {
-      const updatedBookings = bookings.map(booking =>
-        booking.id === selectedBooking.id
-          ? { ...booking, status: 'cancelled' as const }
-          : booking
-      );
-      setBookings(updatedBookings);
-      showNotification('Booking cancelled successfully!', 'success');
-      setShowCancelModal(false);
-      setSelectedBooking(null);
-      setCancelReason('');
-    }
-  };
-
-  const calculateTotalPrice = (car: Car, start: Date, end: Date) => {
-    const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
-    return car.price * days;
-  };
-
-
-
   const filteredAndSortedCars = cars
     .filter(car => {
-      const matchesSearch = car.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           car.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      const matchesSearch = !searchQuery || car.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           (car.brand?.toLowerCase().includes(searchQuery.toLowerCase())) ||
                            car.type.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesType = !selectedType || car.type === selectedType;
       const matchesBrand = !selectedBrand || car.brand === selectedBrand;
@@ -446,8 +486,8 @@ const Cars = () => {
           return a.price - b.price;
         case 'rating':
           return b.rating - a.rating;
-        case 'name':
-          return a.name.localeCompare(b.name);
+        case 'newest':
+          return 0;
         default:
           return 0;
       }
@@ -456,48 +496,13 @@ const Cars = () => {
   const uniqueTypes = Array.from(new Set(cars.map(car => car.type)));
   const uniqueBrands = Array.from(new Set(cars.map(car => car.brand)));
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-900">
-        <div className="bg-gray-800 shadow-lg">
-          <div className="container mx-auto px-4 py-12 text-center">
-            <h1 className="text-4xl font-bold text-white">Discover Your Perfect Ride</h1>
-            <p className="text-gray-300 mt-4 text-lg">Loading our premium collection...</p>
-          </div>
-        </div>
-        <div className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {[...Array(8)].map((_, index) => (
-              <CarSkeleton key={index} />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-900">
-        <div className="bg-gray-800 shadow-lg">
-          <div className="container mx-auto px-4 py-12 text-center">
-            <h1 className="text-4xl font-bold text-white">Discover Your Perfect Ride</h1>
-          </div>
-        </div>
-        <div className="container mx-auto px-4 py-8">
-          <ErrorState message={error} onRetry={fetchCars} />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       {/* Header */}
-      <div className="bg-gray-800 shadow-lg">
+      <div className="bg-gradient-to-r from-primary-600 to-primary-700 shadow-lg">
         <div className="container mx-auto px-4 py-12 text-center">
           <h1 className="text-4xl font-bold text-white">Discover Your Perfect Ride</h1>
-          <p className="text-gray-300 mt-4 text-lg">
+          <p className="text-white/80 mt-4 text-lg">
             Explore our premium collection of {cars.length} vehicles
           </p>
         </div>
@@ -505,23 +510,23 @@ const Cars = () => {
 
       {/* Search and Filters */}
       <div className="container mx-auto px-4 py-8">
-        <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+        <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-lg p-6 border border-neutral-200 dark:border-neutral-700">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="relative">
               <FontAwesomeIcon 
                 icon={faSearch} 
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400" 
               />
               <input
                 type="text"
                 placeholder="Search cars..."
-                className="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 rounded-lg bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white placeholder-neutral-500 dark:placeholder-neutral-400 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-500 focus:border-transparent"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
             <select
-              className="px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 rounded-lg bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500"
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
             >
@@ -531,7 +536,7 @@ const Cars = () => {
               ))}
             </select>
             <select
-              className="px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 rounded-lg bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500"
               value={selectedBrand}
               onChange={(e) => setSelectedBrand(e.target.value)}
             >
@@ -541,11 +546,11 @@ const Cars = () => {
               ))}
             </select>
             <select
-              className="px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as 'price' | 'rating' | 'name')}
+              className="px-4 py-2 rounded-lg bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500"
+              defaultValue="newest"
+              onChange={(e) => setSortBy(e.target.value as 'price' | 'rating' | 'newest')}
             >
-              <option value="name">Sort by Name</option>
+              <option value="newest">Sort by Newest</option>
               <option value="price">Sort by Price</option>
               <option value="rating">Sort by Rating</option>
             </select>
@@ -556,10 +561,10 @@ const Cars = () => {
       {/* Cars Grid */}
       <div className="container mx-auto px-4 pb-8">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-white">
+          <h2 className="text-2xl font-bold text-neutral-900 dark:text-white">
             Available Cars ({filteredAndSortedCars.length})
           </h2>
-          <div className="text-gray-400">
+          <div className="text-neutral-600 dark:text-neutral-400">
             <FontAwesomeIcon icon={faFilter} className="mr-2" />
             {filteredAndSortedCars.length} of {cars.length} cars
           </div>
@@ -567,14 +572,14 @@ const Cars = () => {
         
         {filteredAndSortedCars.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-gray-400 text-lg">No cars found matching your criteria.</p>
+            <p className="text-neutral-600 dark:text-neutral-400 text-lg">No cars found matching your criteria.</p>
             <button
               onClick={() => {
                 setSearchQuery('');
                 setSelectedType('');
                 setSelectedBrand('');
               }}
-              className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="mt-4 px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
             >
               Clear Filters
             </button>
@@ -605,6 +610,130 @@ const Cars = () => {
             }
           }}
         />
+      )}
+
+      {/* Booking Modal */}
+      {showBookingModal && selectedCar && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-xl max-w-md w-full p-6 border border-neutral-200 dark:border-neutral-700">
+            <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-4">Book {selectedCar.name}</h2>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-neutral-700 dark:text-neutral-300 mb-2">Start Date</label>
+                <DatePicker
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  minDate={new Date()}
+                  className="w-full px-4 py-2 rounded-lg bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white"
+                  placeholderText="Select start date"
+                />
+              </div>
+
+              <div>
+                <label className="block text-neutral-700 dark:text-neutral-300 mb-2">End Date</label>
+                <DatePicker
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  minDate={startDate || new Date()}
+                  className="w-full px-4 py-2 rounded-lg bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white"
+                  placeholderText="Select end date"
+                />
+              </div>
+
+              {startDate && endDate && (
+                <div className="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg border border-primary-200 dark:border-primary-800">
+                  <div className="flex justify-between mb-2">
+                    <span className="text-neutral-700 dark:text-neutral-300">Daily Rate:</span>
+                    <span className="text-neutral-900 dark:text-white font-semibold">${selectedCar.price}</span>
+                  </div>
+                  <div className="flex justify-between mb-2">
+                    <span className="text-neutral-700 dark:text-neutral-300">Number of Days:</span>
+                    <span className="text-neutral-900 dark:text-white font-semibold">
+                      {Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1}
+                    </span>
+                  </div>
+                  <div className="border-t border-primary-300 dark:border-primary-700 pt-2 flex justify-between">
+                    <span className="text-neutral-900 dark:text-white font-bold">Total Price:</span>
+                    <span className="text-primary-600 dark:text-primary-400 font-bold text-lg">
+                      ${calculateTotalPrice(selectedCar, startDate, endDate)}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-4 mt-6">
+              <button
+                onClick={() => {
+                  setShowBookingModal(false);
+                  setStartDate(null);
+                  setEndDate(null);
+                }}
+                className="flex-1 px-4 py-2 bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-white rounded-lg hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmBooking}
+                className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-semibold"
+              >
+                Confirm Booking
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Cancellation Modal */}
+      {showCancelModal && selectedBooking && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-xl max-w-md w-full p-6 border border-neutral-200 dark:border-neutral-700">
+            <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-4">Cancel Booking</h2>
+            <p className="text-neutral-700 dark:text-neutral-300 mb-4">
+              Are you sure you want to cancel your booking for {selectedBooking.name}?
+            </p>
+            
+            <div className="mb-4">
+              <label className="block text-neutral-700 dark:text-neutral-300 mb-2">Cancellation Reason</label>
+              <textarea
+                value={cancelReason}
+                onChange={(e) => setCancelReason(e.target.value)}
+                placeholder="Please tell us why you're cancelling..."
+                className="w-full px-4 py-2 rounded-lg bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white placeholder-neutral-500 dark:placeholder-neutral-400 focus:ring-2 focus:ring-primary-500"
+                rows={3}
+              />
+            </div>
+
+            <div className="flex gap-4">
+              <button
+                onClick={() => {
+                  setShowCancelModal(false);
+                  setCancelReason('');
+                  setSelectedBooking(null);
+                }}
+                className="flex-1 px-4 py-2 bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-white rounded-lg hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-colors"
+              >
+                Keep Booking
+              </button>
+              <button
+                onClick={handleCancelBooking}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold"
+              >
+                Cancel Booking
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Notification */}
+      {notification && (
+        <div className={`fixed bottom-4 right-4 px-6 py-3 rounded-lg text-white font-semibold shadow-lg z-50 transition-all duration-300 ${
+          notification.type === 'success' ? 'bg-green-600' : 'bg-red-600'
+        }`}>
+          {notification.message}
+        </div>
       )}
     </div>
   );

@@ -66,33 +66,33 @@ const Contact = () => {
       icon: faMapMarkerAlt,
       title: 'Visit Us',
       content: '123 Car Avenue, Mumbai, Maharashtra 400001',
-      color: 'bg-blue-500'
+      color: 'bg-primary-600'
     },
     {
       icon: faPhone,
       title: 'Call Us',
       content: '+91 98765 43210',
-      color: 'bg-green-500'
+      color: 'bg-primary-600'
     },
     {
       icon: faEnvelope,
       title: 'Email Us',
       content: 'info@rentorbits.com',
-      color: 'bg-purple-500'
+      color: 'bg-primary-600'
     },
     {
       icon: faClock,
       title: 'Working Hours',
       content: 'Mon - Sat: 9:00 AM - 8:00 PM',
-      color: 'bg-orange-500'
+      color: 'bg-primary-600'
     }
   ];
 
   const socialLinks = [
-    { icon: faWhatsapp, link: 'https://wa.me/919876543210', color: 'bg-green-500' },
-    { icon: faFacebook, link: '#', color: 'bg-blue-600' },
-    { icon: faInstagram, link: '#', color: 'bg-pink-600' },
-    { icon: faLinkedin, link: '#', color: 'bg-blue-700' }
+    { icon: faWhatsapp, link: 'https://wa.me/919876543210', color: 'bg-primary-600' },
+    { icon: faFacebook, link: '#', color: 'bg-primary-700' },
+    { icon: faInstagram, link: '#', color: 'bg-primary-600' },
+    { icon: faLinkedin, link: '#', color: 'bg-primary-700' }
   ];
 
   return (
